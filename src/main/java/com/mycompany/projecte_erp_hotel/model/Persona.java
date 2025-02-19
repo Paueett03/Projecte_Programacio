@@ -30,6 +30,7 @@ public class Persona {
         this.adreça = adreça;
         this.document_identitat = document_identitat;
         this.telefon = telefon;
+        this.id_persona = id_persona;
     }
 
     public Persona() {

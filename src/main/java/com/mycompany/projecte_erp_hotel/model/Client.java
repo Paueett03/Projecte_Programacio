@@ -19,6 +19,7 @@ public class Client extends Persona {
         this.data_registre = data_registre;
         this.tipus_client = tipus_client;
         this.targeta_credit = targeta_credit;
+        this.id_client = id_client;
     }
 
     public Client() {

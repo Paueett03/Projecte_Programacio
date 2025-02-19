@@ -27,6 +27,54 @@ public class Factura {
         this.total = total;
         this.id_factura = id_factura;
     }
+
+    public int getId_factura() {
+        return id_factura;
+    }
+
+    public double getBase_imposable() {
+        return base_imposable;
+    }
+
+    public LocalDate getData_emisio() {
+        return data_emisio;
+    }
+
+    public String getMetode_pagament() {
+        return metode_pagament;
+    }
+
+    public double getIva() {
+        return iva;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setId_factura(int id_factura) {
+        this.id_factura = id_factura;
+    }
+
+    public void setBase_imposable(double base_imposable) {
+        this.base_imposable = base_imposable;
+    }
+
+    public void setData_emisio(LocalDate data_emisio) {
+        this.data_emisio = data_emisio;
+    }
+
+    public void setMetode_pagament(String metode_pagament) {
+        this.metode_pagament = metode_pagament;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
     
     
 }

@@ -32,6 +32,7 @@ public class Empleat extends Persona {
         this.llocFeina = llocFeina;
         this.data_contratacio = data_contratacio;
         this.salariBrut = salariBrut;
+        this.id_empleat = id_empleat;
     }
     
 // // Guardar un empleat en la base de datos

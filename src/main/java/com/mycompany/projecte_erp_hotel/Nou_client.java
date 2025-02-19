@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -40,7 +41,16 @@ public class Nou_client {
 
     @FXML
     private TextField email;
-
+    
+    @FXML
+    private ComboBox tipus;
+    
+    @FXML
+    private TextField targeta;
+    
+    @FXML
+    private DatePicker dataRegistre;
+    
     @FXML
     public void guardarComoCliente() {
         // Crear una nueva Persona

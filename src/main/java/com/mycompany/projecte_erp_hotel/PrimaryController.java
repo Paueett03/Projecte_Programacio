@@ -2,73 +2,76 @@ package com.mycompany.projecte_erp_hotel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
 public class PrimaryController {
 
     @FXML
-    private AnchorPane contentPane; // Panel es carregaràn les vistes
+    private BorderPane mainPane; // Se enlaza con el fx:id en el FXML
 
-    private void carregarVista(String fxml) {
+    // Método genérico para cargar una nueva vista
+    private void cambiarVista(String fxml) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/projecte_erp_hotel/views/" + fxml));
-            Parent view = loader.load();
-            contentPane.getChildren().setAll(view); // Reemplaza el contingut central
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/projecte_erp_hotel/NuevoCliente.fxml"));
+            Parent nuevaVista = loader.load();
+            mainPane.setCenter(nuevaVista); // Cambia el centro del BorderPane
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // Métodos para cada opción del menú
     @FXML
-    private void carregarNouClient() {
-        carregarVista("nou_client.fxml");
+    private void cargarNuevoEmpleado() {
+        cambiarVista("/com/mycompany/projecte_erp_hotel/nou_empleat.fxml");
     }
 
     @FXML
-    private void carregarNouEmpleat() {
-        carregarVista("nou_empleat.fxml");
+    private void cargarNuevoCliente() {
+        if (getClass().getResource("/com/mycompany/projecte_erp_hotel/nou_client.fxml") == null) {
+            System.out.println("Error: No se encontró el archivo FXML.");
+            return;
+        }
+        cambiarVista("/com/mycompany/projecte_erp_hotel/nou_client.fxml");
     }
 
     @FXML
-    private void carregarNovaReserva() {
-        carregarVista("nova_reserva.fxml");
+    private void cargarNuevaReserva() {
+        cambiarVista("/com/mycompany/projecte_erp_hotel/nova_reserva.fxml");
     }
 
     @FXML
-    private void carregarVeureReserves() {
-        carregarVista("veure_reserves.fxml");
+    private void cargarVerReservas() {
+        cambiarVista("/com/mycompany/projecte_erp_hotel/veure_reserves.fxml");
     }
 
     @FXML
-    private void carregarGenerarFactures() {
-        carregarVista("generar_factura.fxml");
+    private void cargarNuevaTarea() {
+        cambiarVista("/com/mycompany.projecte_erp_hotel/assignar_tasques.fxml");
     }
 
     @FXML
-    private void carregarVeureFactures() {
-        carregarVista("veure_factures.fxml");
+    private void cargarVerTareas() {
+        cambiarVista("/com/mycompany.projecte_erp_hotel/veure_tasques.fxml");
     }
 
     @FXML
-    private void carregarAsignarTasques() {
-        carregarVista("asignar_tasques.fxml");
+    private void cargarVerFacturas() {
+        cambiarVista("/com/mycompany/projecte_erp_hotel/veure_factures.fxml");
     }
 
     @FXML
-    private void carregarVeureTasques() {
-        carregarVista("veure_tasques.fxml");
+    private void cargarGenerarFacturas() {
+        cambiarVista("/com/mycompany/projecte_erp_hotel/generar_factura.fxml");
     }
 
     @FXML
-    private void carregarNouClientEmpleat() {
-        carregarVista("Nou_client_i_empleat.fxml");
+    private void cerrarPrograma() {
+        System.exit(0); // Cierra la aplicación
     }
 
-    @FXML
-    private void sortir() {
-        System.exit(0); // Tanca l'aplicació
-    }
 }

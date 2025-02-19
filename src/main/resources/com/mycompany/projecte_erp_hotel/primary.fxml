@@ -6,32 +6,34 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.PrimaryController">
-
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.PrimaryController">
     <top>
         <MenuBar>
-            <Menu text="Persona">
-                <MenuItem onAction="#carregarNouClient" text="Nou Client" />
-                <MenuItem onAction="#carregarNouEmpleat" text="Nou Empleat" />
-                <MenuItem onAction="#sortir" text="Sortir" />
-            </Menu>
-            <Menu text="Reservas">
-                <MenuItem onAction="#carregarNovaReserva" text="Nova Reserva" />
-                <MenuItem onAction="#carregarVeureReserves" text="Veure Reserves" />
-            </Menu>
-            <Menu text="Facturas">
-                <MenuItem onAction="#carregarGenerarFactures" text="Generar Factures" />
-                <MenuItem onAction="#carregarVeureFactures" text="Veure Factures" />
-            </Menu>
-            <Menu text="Tareas">
-                <MenuItem onAction="#carregarAsignarTasques" text="Assignar Tasques" />
-                <MenuItem onAction="#carregarVeureTasques" text="Veure Tasques" />
-            </Menu>
+            <menus>
+                <Menu text="Persona">
+                    <MenuItem onAction="#cargarNuevoEmpleado" text="Nou Empleat" />
+                    <MenuItem onAction="#cargarNuevoCliente" text="Nou Client" />
+                </Menu>
+                <Menu text="Reserves">
+                    <MenuItem onAction="#cargarNuevaReserva" text="Nova Reserva" />
+                    <MenuItem onAction="#cargarVerReservas" text="Veure Reserves" />
+                </Menu>
+                <Menu text="Tasques">
+                    <MenuItem onAction="#cargarNuevaTarea" text="Nova Tasca" />
+                    <MenuItem onAction="#cargarVerTareas" text="Veure Tasques" />
+                </Menu>
+                <Menu text="Facturas">
+                    <MenuItem onAction="#cargarVerFacturas" text="Veure Factures" />
+                    <MenuItem onAction="#cargarGenerarFacturas" text="Generar Factures" />
+                </Menu>
+                <Menu text="Opciones">
+                    <MenuItem onAction="#cerrarPrograma" text="Sortir" />
+                </Menu>
+
+            </menus>
         </MenuBar>
     </top>
-
     <center>
         <AnchorPane fx:id="contentPane" />
     </center>
-
 </BorderPane>
