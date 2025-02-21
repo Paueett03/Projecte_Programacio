@@ -1,53 +1,108 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.projecte_erp_hotel.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Date;
 
-/**
- *
- * @author alumne
- */
-public class Empleat extends Persona {
+public class Empleat {
 
-    private int id_empleat;
-    private String llocFeina;
-    private LocalDate data_contratacio;
-    private double salariBrut;
+    private String nom;
+    private String cognom;
+    private String adreça;
+    private String documentIdentitat;
+    private String telefon;
+    private String email;
+    private String dataNaixement;
 
-    private enum estat_laboral {
-        Actiu,
-        Baixa,
-        Permis
+    public Empleat(String nom, String cognom, String adreça, String documentIdentitat, String telefon, String email, String dataNaixement) {
+        this.nom = nom;
+        this.cognom = cognom;
+        this.adreça = adreça;
+        this.documentIdentitat = documentIdentitat;
+        this.telefon = telefon;
+        this.email = email;
+        this.dataNaixement = dataNaixement;
     }
 
-    public Empleat(String llocFeina, LocalDate data_contratacio, double salariBrut, String email, LocalDate data_naixement, String nom, String cognom, String adreça, String document_identitat, String telefon) {
-        super(email, data_naixement, nom, cognom, adreça, document_identitat, telefon);
-        this.llocFeina = llocFeina;
-        this.data_contratacio = data_contratacio;
-        this.salariBrut = salariBrut;
-        this.id_empleat = id_empleat;
-    }
-    
-// // Guardar un empleat en la base de datos
-//    public void save() {
-//        String sql = "INSERT INTO Clients (data_registre, tipus_client, targeta_credit) VALUES (?, ?, ?)";
-//        try (Connection conn = new Connexio().connecta(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            pstmt.setString(1, this.data_registre);
-//            pstmt.setString(2, this.tipus_client);
-//            pstmt.setString(3, this.targeta_credit);
-//            pstmt.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    // Getters y setters
 
-    public Empleat() {
+    public void inserirEmpleat() throws SQLException {
+        Connexio connexio = new Connexio();
+        Connection conn = connexio.connecta();
+        String sql = "INSERT INTO Empleats (nom, cognom, adreça, document_identitat, telefon, email, data_naixement) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, this.nom);
+            stmt.setString(2, this.cognom);
+            stmt.setString(3, this.adreça);
+            stmt.setString(4, this.documentIdentitat);
+            stmt.setString(5, this.telefon);
+            stmt.setString(6, this.email);
+            stmt.setString(7, this.dataNaixement);
+
+            int filasAfectadas = stmt.executeUpdate();
+            if (filasAfectadas > 0) {
+                System.out.println("Nou empleat afegit correctament.");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error en inserir l'empleat: " + e.getMessage(), e);
+        }
+    }
+
+    // Getters y setters
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getCognom() {
+        return cognom;
+    }
+
+    public void setCognom(String cognom) {
+        this.cognom = cognom;
+    }
+
+    public String getAdreça() {
+        return adreça;
+    }
+
+    public void setAdreça(String adreça) {
+        this.adreça = adreça;
+    }
+
+    public String getDocumentIdentitat() {
+        return documentIdentitat;
+    }
+
+    public void setDocumentIdentitat(String documentIdentitat) {
+        this.documentIdentitat = documentIdentitat;
+    }
+
+    public String getTelefon() {
+        return telefon;
+    }
+
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDataNaixement() {
+        return dataNaixement;
+    }
+
+    public void setDataNaixement(String dataNaixement) {
+        this.dataNaixement = dataNaixement;
     }
 }

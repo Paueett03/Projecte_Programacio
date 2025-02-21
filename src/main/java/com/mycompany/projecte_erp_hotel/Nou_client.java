@@ -1,23 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.mycompany.projecte_erp_hotel;
 
 import com.mycompany.projecte_erp_hotel.model.Client;
-import com.mycompany.projecte_erp_hotel.model.Persona;
-import java.net.URL;
-import java.util.ResourceBundle;
+import com.mycompany.projecte_erp_hotel.model.Model;
+import java.sql.Date;
+import java.time.LocalDate;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
- *
- * @author alumne
+ * Controlador FXML para la creación de nuevos clientes.
  */
 public class Nou_client {
 
@@ -41,46 +37,101 @@ public class Nou_client {
 
     @FXML
     private TextField email;
-    
+
     @FXML
-    private ComboBox tipus;
-    
+    private ComboBox<String> tipus;
+
     @FXML
     private TextField targeta;
-    
+
     @FXML
     private DatePicker dataRegistre;
-    
+
     @FXML
-    public void guardarComoCliente() {
-        // Crear una nueva Persona
-        Persona persona = new Persona();
-        persona.setEmail(email.getText());
-        persona.setData_naixement(dataNaixement.getValue());
-        persona.setNom(nom.getText());
-        persona.setCognom(cognom.getText());
-        persona.setAdreça(adreca.getText());
-        persona.setDocument_identitat(documentIdentitat.getText());
-        persona.setTelefon(telefon.getText());
+    public void initialize() {
+        // Crear una lista observable de tipos
+        ObservableList<String> options = FXCollections.observableArrayList(
+                "Estudiant", "Treballador", "Aturat"
+        );
 
-        // Crear un nuevo Cliente a partir de la Persona
-        Client client = new Client();
-        client.setData_registre(client.getData_registre());
-        client.getTipus_client();
-        client.getTargeta_credit();
-        client.setNom(persona.getNom());
-        client.setCognom(persona.getCognom());
-        client.setAdreça(persona.getAdreça());
-        client.setDocument_identitat(persona.getDocument_identitat());
-        client.setData_naixement(persona.getData_naixement());
-        client.setTelefon(persona.getTelefon());
-        client.setEmail(persona.getEmail());
-
-        // Guardar el cliente en la base de datos
-        client.save();
-
-        // Cerrar la ventana de alta de persona
-        nom.getScene().getWindow().hide();
+        // Asignar la lista al ComboBox
+        tipus.setItems(options);
     }
 
+    Model model = new Model();
+
+    @FXML
+    public void guardarComoCliente() {
+        try {
+            // Obtener los valores de los campos
+            String nom = this.nom.getText();
+            String cognom = this.cognom.getText();
+            String adreca = this.adreca.getText();
+            String documentIdentitat = this.documentIdentitat.getText();
+            String telefon = this.telefon.getText();
+            String email = this.email.getText();
+            String tipus = this.tipus.getValue();
+            String targeta = this.targeta.getText();
+
+            // Verificar si las fechas son nulas antes de convertirlas
+            LocalDate dataNaixementValue = this.dataNaixement.getValue();
+            Date sqlDateNaixement = (dataNaixementValue != null) ? Date.valueOf(dataNaixementValue) : null;
+
+            LocalDate dataRegistreValue = this.dataRegistre.getValue();
+
+            // Validaciones básicas
+            if (nom.isEmpty() || cognom.isEmpty() || email.isEmpty() || documentIdentitat.isEmpty()) {
+                mostrarAlertError("Els camps Nom, Cognom, Email i Document d'Identitat són obligatoris.");
+                return;
+            }
+
+            // Crear un objeto Cliente con los valores obtenidos
+            Client nuevoCliente = new Client(dataRegistreValue, tipus, targeta, email, sqlDateNaixement, nom, cognom, adreca, documentIdentitat, telefon);
+
+            // Guardar el cliente en la base de datos
+            boolean clienteGuardado = nuevoCliente.save(nuevoCliente);
+
+            if (clienteGuardado) {
+                mostrarAlertInfo("Client desat correctament.");
+            } else {
+                mostrarAlertError("No s'ha pogut desar el client a la base de dades.");
+            }
+
+            borrarCampos();
+        } catch (Exception e) {
+            mostrarAlertError("Error inesperat: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void borrarCampos() {
+        nom.clear();
+        cognom.clear();
+        adreca.clear();
+        documentIdentitat.clear();
+        targeta.clear();
+        telefon.clear();
+        email.clear();
+        dataRegistre.getEditor().clear();
+        dataNaixement.getEditor().clear();
+        tipus.valueProperty().set(null);
+    }
+
+    @FXML
+    private void mostrarAlertError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Error");
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void mostrarAlertInfo(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Info");
+        alert.setContentText("Informacion sobre la aplicación");
+        alert.showAndWait();
+    }
 }

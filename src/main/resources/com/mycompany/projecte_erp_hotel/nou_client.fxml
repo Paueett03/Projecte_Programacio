@@ -179,7 +179,7 @@
             <Label prefHeight="16.0" prefWidth="47.0" text="Tipus:" />
          </children>
       </GridPane>
-      <Button layoutX="31.0" layoutY="332.0" mnemonicParsing="false" text="Crear" />
-      <Button layoutX="133.0" layoutY="332.0" mnemonicParsing="false" text="Borrar" />
+      <Button layoutX="31.0" layoutY="332.0" mnemonicParsing="false" onAction="#guardarComoCliente" text="Crear" />
+      <Button layoutX="133.0" layoutY="332.0" mnemonicParsing="false" onAction="#borrarCampos" text="Borrar" />
    </children>
 </AnchorPane>

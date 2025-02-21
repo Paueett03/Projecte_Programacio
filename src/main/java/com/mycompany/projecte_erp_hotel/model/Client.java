@@ -1,75 +1,108 @@
 package com.mycompany.projecte_erp_hotel.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Client extends Persona {
 
-    private int id_client;
-    private String data_registre;
-    private String tipus_client;
-    private String targeta_credit;
+    private int idClient;
+    private LocalDate dataRegistre;
+    private String tipusClient;
+    private String targetaCredit;
 
     // Constructor con parámetros
-    public Client(String data_registre, String tipus_client, String targeta_credit, String email, LocalDate data_naixement, String nom, String cognom, String adreça, String document_identitat, String telefon) {
-        super(email, data_naixement, nom, cognom, adreça, document_identitat, telefon);
-        this.data_registre = data_registre;
-        this.tipus_client = tipus_client;
-        this.targeta_credit = targeta_credit;
-        this.id_client = id_client;
+    public Client(LocalDate dataRegistre, String tipusClient, String targetaCredit, 
+                  String email, Date dataNaixement, String nom, String cognom, 
+                  String adreça, String documentIdentitat, String telefon) {
+        super(email, dataNaixement, nom, cognom, adreça, documentIdentitat, telefon);
+        this.dataRegistre = dataRegistre;
+        this.tipusClient = tipusClient;
+        this.targetaCredit = targetaCredit;
     }
 
-    public Client() {
-    }
+    public Client() {}
 
     // Getters y Setters
-    public int getId_client() {
-        return id_client;
+    public int getIdClient() {
+        return idClient;
     }
 
-    public String getData_registre() {
-        return data_registre;
+    public void setIdClient(int idClient) {
+        this.idClient = idClient;
     }
 
-    public String getTipus_client() {
-        return tipus_client;
+    public LocalDate getDataRegistre() {
+        return dataRegistre;
     }
 
-    public String getTargeta_credit() {
-        return targeta_credit;
+    public void setDataRegistre(LocalDate dataRegistre) {
+        this.dataRegistre = dataRegistre;
     }
 
-    public void setId_client(int id_client) {
-        this.id_client = id_client;
+    public String getTipusClient() {
+        return tipusClient;
     }
 
-    public void setData_registre(String data_registre) {
-        this.data_registre = data_registre;
+    public void setTipusClient(String tipusClient) {
+        this.tipusClient = tipusClient;
     }
 
-    public void setTipus_client(String tipus_client) {
-        this.tipus_client = tipus_client;
+    public String getTargetaCredit() {
+        return targetaCredit;
     }
 
-    public void setTargeta_credit(String targeta_credit) {
-        this.targeta_credit = targeta_credit;
+    public void setTargetaCredit(String targetaCredit) {
+        this.targetaCredit = targetaCredit;
     }
-    
-    
 
     // Guardar un cliente en la base de datos
-    public void save() {
-        String sql = "INSERT INTO Clients (data_registre, tipus_client, targeta_credit) VALUES (?, ?, ?)";
-        try (Connection conn = new Connexio().connecta(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, this.data_registre);
-            pstmt.setString(2, this.tipus_client);
-            pstmt.setString(3, this.targeta_credit);
-            pstmt.executeUpdate();
+    public boolean save(Client nuevoCliente) {
+        String sqlPersona = "INSERT INTO Persona (email, data_naixement, nom, cognom, adreça, document_identitat, telefon) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sqlClient = "INSERT INTO Client (id_persona, data_registre, tipus_client, targeta_credit) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = new Connexio().connecta()) {
+            conn.setAutoCommit(false);
+
+            // Insertar en Persona
+            int idPersona = -1;
+            try (PreparedStatement pstmtPersona = conn.prepareStatement(sqlPersona, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                pstmtPersona.setString(1, nuevoCliente.getEmail());
+                pstmtPersona.setObject(2, nuevoCliente.getDataNaixement());
+                pstmtPersona.setString(3, nuevoCliente.getNom());
+                pstmtPersona.setString(4, nuevoCliente.getCognom());
+                pstmtPersona.setString(5, nuevoCliente.getAdreça());
+                pstmtPersona.setString(6, nuevoCliente.getDocumentIdentitat());
+                pstmtPersona.setString(7, nuevoCliente.getTelefon());
+                pstmtPersona.executeUpdate();
+
+                try (ResultSet generatedKeys = pstmtPersona.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        idPersona = generatedKeys.getInt(1);
+                    }
+                }
+            }
+
+            if (idPersona != -1) {
+                try (PreparedStatement pstmtClient = conn.prepareStatement(sqlClient)) {
+                    pstmtClient.setInt(1, idPersona);
+                    pstmtClient.setObject(2, nuevoCliente.getDataRegistre());
+                    pstmtClient.setString(3, nuevoCliente.getTipusClient());
+                    pstmtClient.setString(4, nuevoCliente.getTargetaCredit());
+                    pstmtClient.executeUpdate();
+                }
+                conn.commit();
+                return true;
+            } else {
+                conn.rollback();
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }

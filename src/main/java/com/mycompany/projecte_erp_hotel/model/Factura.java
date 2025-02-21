@@ -1,15 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.projecte_erp_hotel.model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
-/**
- *
- * @author alumne
- */
 public class Factura {
 
     private int id_factura;
@@ -25,7 +20,6 @@ public class Factura {
         this.metode_pagament = metode_pagament;
         this.iva = iva;
         this.total = total;
-        this.id_factura = id_factura;
     }
 
     public int getId_factura() {
@@ -75,6 +69,19 @@ public class Factura {
     public void setTotal(double total) {
         this.total = total;
     }
-    
-    
+
+    // Guardar la factura en la base de datos
+    public void save() {
+        String sql = "INSERT INTO Factura (base_imposable, data_emisio, metode_pagament, iva, total) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = new Connexio().connecta(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, this.base_imposable);
+            pstmt.setDate(2, java.sql.Date.valueOf(this.data_emisio));  // Convertir LocalDate a java.sql.Date
+            pstmt.setString(3, this.metode_pagament);
+            pstmt.setDouble(4, this.iva);
+            pstmt.setDouble(5, this.total);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

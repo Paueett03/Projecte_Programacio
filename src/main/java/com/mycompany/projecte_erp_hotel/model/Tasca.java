@@ -1,69 +1,59 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.projecte_erp_hotel.model;
 
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-/**
- *
- * @author alumne
- */
 public class Tasca {
 
     private int id_tasca;
     private Date data_creacio;
-    private Date data_ejecucio;
+    private Date data_execucio;
     private String descripcio;
     private String estat;
 
-    public Tasca(Date data_creacio, Date data_ejecucio, String descripcio, String estat) {
-        this.id_tasca = id_tasca;
+    public Tasca(Date data_creacio, Date data_execucio, String descripcio, String estat) {
         this.data_creacio = data_creacio;
-        this.data_ejecucio = data_ejecucio;
+        this.data_execucio = data_execucio;
         this.descripcio = descripcio;
         this.estat = estat;
     }
 
-    public int getId_tasca() {
-        return id_tasca;
-    }
+    // Getters i setters
 
-    public Date getData_creacio() {
-        return data_creacio;
-    }
+    public void insertarTasca() throws SQLException {
+        // Establim la connexió amb la base de dades
+        Connexio connexio = new Connexio();
+        Connection conn = connexio.connecta();
+        
+        // Sentència SQL per inserir les dades
+        String sql = "INSERT INTO Tasca (data_creacio, data_execucio, descripcio, estat) "
+                   + "VALUES (?, ?, ?, ?)";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Establim els valors dels paràmetres de la consulta
+            stmt.setDate(1, this.data_creacio);  // Utilitzem `this` per accedir a les variables de la classe
+            stmt.setDate(2, this.data_execucio);
+            stmt.setString(3, this.descripcio);
+            stmt.setString(4, this.estat);
 
-    public Date getData_ejecucio() {
-        return data_ejecucio;
+            // Executem la inserció
+            int filesAfectades = stmt.executeUpdate();
+            if (filesAfectades > 0) {
+                System.out.println("Tasca inserida correctament.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error a l'inserir la tasca: " + e.getMessage());
+        } finally {
+            // Tanquem la connexió
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al tancar la connexió: " + e.getMessage());
+            }
+        }
     }
-
-    public String getDescripcio() {
-        return descripcio;
-    }
-
-    public String getEstat() {
-        return estat;
-    }
-
-    public void setId_tasca(int id_tasca) {
-        this.id_tasca = id_tasca;
-    }
-
-    public void setData_creacio(Date data_creacio) {
-        this.data_creacio = data_creacio;
-    }
-
-    public void setData_ejecucio(Date data_ejecucio) {
-        this.data_ejecucio = data_ejecucio;
-    }
-
-    public void setDescripcio(String descripcio) {
-        this.descripcio = descripcio;
-    }
-
-    public void setEstat(String estat) {
-        this.estat = estat;
-    }
-    
 }

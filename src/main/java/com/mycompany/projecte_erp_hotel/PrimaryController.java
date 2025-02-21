@@ -16,11 +16,9 @@ public class PrimaryController {
     private void cambiarVista(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/mycompany/projecte_erp_hotel/NuevoCliente.fxml"));
             Parent nuevaVista = loader.load();
             mainPane.setCenter(nuevaVista); // Cambia el centro del BorderPane
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
