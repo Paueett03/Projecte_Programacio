@@ -60,44 +60,50 @@ public class Nou_client {
 
     Model model = new Model();
 
-    @FXML
+ @FXML
     public void guardarComoCliente() {
         try {
-            // Obtener los valores de los campos
-            String nom = this.nom.getText();
-            String cognom = this.cognom.getText();
-            String adreca = this.adreca.getText();
-            String documentIdentitat = this.documentIdentitat.getText();
-            String telefon = this.telefon.getText();
-            String email = this.email.getText();
-            String tipus = this.tipus.getValue();
-            String targeta = this.targeta.getText();
+            // Validaciones básicas
+            if (nom.getText().isEmpty() || cognom.getText().isEmpty() || 
+                email.getText().isEmpty() || documentIdentitat.getText().isEmpty()) {
+                mostrarAlertError("Els camps Nom, Cognom, Email i Document d'Identitat són obligatoris.");
+                return;
+            }
 
             // Verificar si las fechas son nulas antes de convertirlas
             LocalDate dataNaixementValue = this.dataNaixement.getValue();
             Date sqlDateNaixement = (dataNaixementValue != null) ? Date.valueOf(dataNaixementValue) : null;
 
             LocalDate dataRegistreValue = this.dataRegistre.getValue();
-
-            // Validaciones básicas
-            if (nom.isEmpty() || cognom.isEmpty() || email.isEmpty() || documentIdentitat.isEmpty()) {
-                mostrarAlertError("Els camps Nom, Cognom, Email i Document d'Identitat són obligatoris.");
+            if (dataRegistreValue == null) {
+                mostrarAlertError("La data de registre és obligatòria.");
                 return;
             }
 
             // Crear un objeto Cliente con los valores obtenidos
-            Client nuevoCliente = new Client(dataRegistreValue, tipus, targeta, email, sqlDateNaixement, nom, cognom, adreca, documentIdentitat, telefon);
+            Client nuevoCliente = new Client(
+                dataRegistreValue,
+                tipus.getValue(),
+                targeta.getText(),
+                email.getText(),
+                sqlDateNaixement,
+                nom.getText(),
+                cognom.getText(),
+                adreca.getText(),
+                documentIdentitat.getText(),
+                telefon.getText()
+            );
 
             // Guardar el cliente en la base de datos
             boolean clienteGuardado = nuevoCliente.save(nuevoCliente);
 
             if (clienteGuardado) {
                 mostrarAlertInfo("Client desat correctament.");
+                borrarCampos();
             } else {
-                mostrarAlertError("No s'ha pogut desar el client a la base de dades.");
+                mostrarAlertError("No s'ha pogut desar el client. Potser ja existeix.");
             }
 
-            borrarCampos();
         } catch (Exception e) {
             mostrarAlertError("Error inesperat: " + e.getMessage());
         }
@@ -131,7 +137,7 @@ public class Nou_client {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.setTitle("Info");
-        alert.setContentText("Informacion sobre la aplicación");
+        alert.setContentText(mensaje);
         alert.showAndWait();
     }
 }

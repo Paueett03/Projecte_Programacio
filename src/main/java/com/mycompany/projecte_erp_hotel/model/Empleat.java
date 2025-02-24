@@ -1,108 +1,161 @@
 package com.mycompany.projecte_erp_hotel.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
-public class Empleat {
+public class Empleat extends Persona {
+    private int idEmpleat;
+    private String llocFeina;
+    private LocalDate dataContratacio;
+    private double salariBrut;
+    private String estatLaboral;
 
-    private String nom;
-    private String cognom;
-    private String adreça;
-    private String documentIdentitat;
-    private String telefon;
-    private String email;
-    private String dataNaixement;
-
-    public Empleat(String nom, String cognom, String adreça, String documentIdentitat, String telefon, String email, String dataNaixement) {
-        this.nom = nom;
-        this.cognom = cognom;
-        this.adreça = adreça;
-        this.documentIdentitat = documentIdentitat;
-        this.telefon = telefon;
-        this.email = email;
-        this.dataNaixement = dataNaixement;
+    // Constructor
+    public Empleat(String llocFeina, LocalDate dataContratacio, double salariBrut, 
+                  String estatLaboral, String email, Date dataNaixement, String nom, 
+                  String cognom, String adreça, String documentIdentitat, String telefon) {
+        super(email, dataNaixement, nom, cognom, adreça, documentIdentitat, telefon);
+        this.llocFeina = llocFeina;
+        this.dataContratacio = dataContratacio;
+        this.salariBrut = salariBrut;
+        this.estatLaboral = estatLaboral;
     }
 
-    // Getters y setters
+    public Empleat() {}
 
-    public void inserirEmpleat() throws SQLException {
-        Connexio connexio = new Connexio();
-        Connection conn = connexio.connecta();
-        String sql = "INSERT INTO Empleats (nom, cognom, adreça, document_identitat, telefon, email, data_naixement) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, this.nom);
-            stmt.setString(2, this.cognom);
-            stmt.setString(3, this.adreça);
-            stmt.setString(4, this.documentIdentitat);
-            stmt.setString(5, this.telefon);
-            stmt.setString(6, this.email);
-            stmt.setString(7, this.dataNaixement);
+    // Getters y Setters
+    public int getIdEmpleat() {
+        return idEmpleat;
+    }
 
-            int filasAfectadas = stmt.executeUpdate();
-            if (filasAfectadas > 0) {
-                System.out.println("Nou empleat afegit correctament.");
+    public void setIdEmpleat(int idEmpleat) {
+        this.idEmpleat = idEmpleat;
+    }
+
+    public String getLlocFeina() {
+        return llocFeina;
+    }
+
+    public void setLlocFeina(String llocFeina) {
+        this.llocFeina = llocFeina;
+    }
+
+    public LocalDate getDataContratacio() {
+        return dataContratacio;
+    }
+
+    public void setDataContratacio(LocalDate dataContratacio) {
+        this.dataContratacio = dataContratacio;
+    }
+
+    public double getSalariBrut() {
+        return salariBrut;
+    }
+
+    public void setSalariBrut(double salariBrut) {
+        this.salariBrut = salariBrut;
+    }
+
+    public String getEstatLaboral() {
+        return estatLaboral;
+    }
+
+    public void setEstatLaboral(String estatLaboral) {
+        this.estatLaboral = estatLaboral;
+    }
+
+    // Método para verificar tanto por DNI como por email
+    private int checkExistingPerson(Connection conn, String documentIdentitat, String email) throws SQLException {
+        String sql = "SELECT id_persona FROM Persona WHERE document_identitat = ? OR email = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, documentIdentitat);
+            pstmt.setString(2, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id_persona");
+            }
+        }
+        return -1;
+    }
+
+    // Méttodo para insertar los datos en la base de datos
+    public boolean save(Empleat nouEmpleat) {
+        String sqlPersona = "INSERT INTO Persona (email, data_naixement, nom, cognom, adreça, document_identitat, telefon) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sqlEmpleat = "INSERT INTO Empleat (id_persona, llocFeina, data_contractacio, salariBrut, estat_laboral) VALUES (?, ?, ?, ?, ?)";
+        
+        try (Connection conn = new Connexio().connecta()) {
+            conn.setAutoCommit(false);
+            
+            try {
+                // Primero verificamos si la persona existe (por DNI o email)
+                int idPersona = checkExistingPerson(conn, nouEmpleat.getDocumentIdentitat(), nouEmpleat.getEmail());
+                
+                if (idPersona != -1) {
+                    // La persona existe, verificar si ya es empleado
+                    String checkEmpleat = "SELECT id_empleat FROM Empleat WHERE id_persona = ?";
+                    try (PreparedStatement pstmtCheck = conn.prepareStatement(checkEmpleat)) {
+                        pstmtCheck.setInt(1, idPersona);
+                        ResultSet rs = pstmtCheck.executeQuery();
+                        if (rs.next()) {
+                            // Ya existe como empleado
+                            conn.rollback();
+                            return false;
+                        }
+                        
+                        // Existe como persona pero no como empleado, solo insertamos en Empleat
+                        try (PreparedStatement pstmtEmpleat = conn.prepareStatement(sqlEmpleat)) {
+                            pstmtEmpleat.setInt(1, idPersona);
+                            pstmtEmpleat.setString(2, nouEmpleat.getLlocFeina());
+                            pstmtEmpleat.setObject(3, nouEmpleat.getDataContratacio());
+                            pstmtEmpleat.setDouble(4, nouEmpleat.getSalariBrut());
+                            pstmtEmpleat.setString(5, nouEmpleat.getEstatLaboral());
+                            pstmtEmpleat.executeUpdate();
+                        }
+                    }
+                } else {
+                    // La persona no existe, insertamos en ambas tablas
+                    try (PreparedStatement pstmtPersona = conn.prepareStatement(sqlPersona, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                        pstmtPersona.setString(1, nouEmpleat.getEmail());
+                        pstmtPersona.setObject(2, nouEmpleat.getDataNaixement());
+                        pstmtPersona.setString(3, nouEmpleat.getNom());
+                        pstmtPersona.setString(4, nouEmpleat.getCognom());
+                        pstmtPersona.setString(5, nouEmpleat.getAdreça());
+                        pstmtPersona.setString(6, nouEmpleat.getDocumentIdentitat());
+                        pstmtPersona.setString(7, nouEmpleat.getTelefon());
+                        pstmtPersona.executeUpdate();
+
+                        try (ResultSet generatedKeys = pstmtPersona.getGeneratedKeys()) {
+                            if (generatedKeys.next()) {
+                                idPersona = generatedKeys.getInt(1);
+                                
+                                // Insertar nuevo empleado
+                                try (PreparedStatement pstmtEmpleat = conn.prepareStatement(sqlEmpleat)) {
+                                    pstmtEmpleat.setInt(1, idPersona);
+                                    pstmtEmpleat.setString(2, nouEmpleat.getLlocFeina());
+                                    pstmtEmpleat.setObject(3, nouEmpleat.getDataContratacio());
+                                    pstmtEmpleat.setDouble(4, nouEmpleat.getSalariBrut());
+                                    pstmtEmpleat.setString(5, nouEmpleat.getEstatLaboral());
+                                    pstmtEmpleat.executeUpdate();
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                conn.commit();
+                return true;
+                
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
             }
         } catch (SQLException e) {
-            throw new SQLException("Error en inserir l'empleat: " + e.getMessage(), e);
+            e.printStackTrace();
+            return false;
         }
-    }
-
-    // Getters y setters
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getCognom() {
-        return cognom;
-    }
-
-    public void setCognom(String cognom) {
-        this.cognom = cognom;
-    }
-
-    public String getAdreça() {
-        return adreça;
-    }
-
-    public void setAdreça(String adreça) {
-        this.adreça = adreça;
-    }
-
-    public String getDocumentIdentitat() {
-        return documentIdentitat;
-    }
-
-    public void setDocumentIdentitat(String documentIdentitat) {
-        this.documentIdentitat = documentIdentitat;
-    }
-
-    public String getTelefon() {
-        return telefon;
-    }
-
-    public void setTelefon(String telefon) {
-        this.telefon = telefon;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDataNaixement() {
-        return dataNaixement;
-    }
-
-    public void setDataNaixement(String dataNaixement) {
-        this.dataNaixement = dataNaixement;
     }
 }
