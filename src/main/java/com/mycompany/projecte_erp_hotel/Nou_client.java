@@ -1,7 +1,6 @@
 package com.mycompany.projecte_erp_hotel;
 
 import com.mycompany.projecte_erp_hotel.model.Client;
-import com.mycompany.projecte_erp_hotel.model.Model;
 import java.sql.Date;
 import java.time.LocalDate;
 import javafx.collections.FXCollections;
@@ -57,8 +56,6 @@ public class Nou_client {
         // Asignar la lista al ComboBox
         tipus.setItems(options);
     }
-
-    Model model = new Model();
 
  @FXML
     public void guardarComoCliente() {

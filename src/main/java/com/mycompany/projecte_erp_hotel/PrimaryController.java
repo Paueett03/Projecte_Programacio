@@ -49,12 +49,20 @@ public class PrimaryController {
 
     @FXML
     private void cargarNuevaTarea() {
-        cambiarVista("/com/mycompany.projecte_erp_hotel/assignar_tasques.fxml");
+        if (getClass().getResource("/com/mycompany/projecte_erp_hotel/asignar_tasques.fxml") == null) {
+            System.out.println("Error: No se encontró el archivo FXML.");
+            return;
+        }
+        cambiarVista("/com/mycompany/projecte_erp_hotel/asignar_tasques.fxml");
     }
 
     @FXML
     private void cargarVerTareas() {
-        cambiarVista("/com/mycompany.projecte_erp_hotel/veure_tasques.fxml");
+        if (getClass().getResource("/com/mycompany/projecte_erp_hotel/veure_tasques.fxml") == null) {
+            System.out.println("Error: No se encontró el archivo FXML.");
+            return;
+        }
+        cambiarVista("/com/mycompany/projecte_erp_hotel/veure_tasques.fxml");
     }
 
     @FXML
@@ -71,5 +79,12 @@ public class PrimaryController {
     private void cerrarPrograma() {
         System.exit(0); // Cierra la aplicación
     }
+    
+    
+    @FXML
+    private void initialize(){
+        cambiarVista("/com/mycompany/projecte_erp_hotel/Benvinguda.fxml");
+    }
+    
 
 }
