@@ -3,57 +3,78 @@ package com.mycompany.projecte_erp_hotel.model;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tasca {
-
     private int id_tasca;
-    private Date data_creacio;
-    private Date data_execucio;
+    private Date dataCreacio;
+    private Date dataExecucio;
     private String descripcio;
     private String estat;
 
     public Tasca(Date data_creacio, Date data_execucio, String descripcio, String estat) {
-        this.data_creacio = data_creacio;
-        this.data_execucio = data_execucio;
+        this.dataCreacio = data_creacio;
+        this.dataExecucio = data_execucio;
         this.descripcio = descripcio;
         this.estat = estat;
     }
 
+    public Tasca() {}
+
     // Getters i setters
 
+    public int getId_tasca() {
+        return id_tasca;
+    }
+
+    public Date getData_creacio() {
+        return dataCreacio;
+    }
+
+    public Date getData_execucio() {
+        return dataExecucio;
+    }
+
+    public String getDescripcio() {
+        return descripcio;
+    }
+
+    public String getEstat() {
+        return estat;
+    }
+
+    
     public void insertarTasca() throws SQLException {
-        // Establim la connexió amb la base de dades
-        Connexio connexio = new Connexio();
-        Connection conn = connexio.connecta();
-        
-        // Sentència SQL per inserir les dades
-        String sql = "INSERT INTO Tasca (data_creacio, data_execucio, descripcio, estat) "
-                   + "VALUES (?, ?, ?, ?)";
-        
+        Connection conn = new Connexio().connecta();
+        String sql = "INSERT INTO Tasca (data_creacio, data_execucio, descripcio, estat) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Establim els valors dels paràmetres de la consulta
-            stmt.setDate(1, this.data_creacio);  // Utilitzem `this` per accedir a les variables de la classe
-            stmt.setDate(2, this.data_execucio);
+            stmt.setDate(1, this.dataCreacio);
+            stmt.setDate(2, this.dataExecucio);
             stmt.setString(3, this.descripcio);
             stmt.setString(4, this.estat);
+            stmt.executeUpdate();
+        }
+    }
 
-            // Executem la inserció
-            int filesAfectades = stmt.executeUpdate();
-            if (filesAfectades > 0) {
-                System.out.println("Tasca inserida correctament.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error a l'inserir la tasca: " + e.getMessage());
-        } finally {
-            // Tanquem la connexió
-            try {
-                if (conn != null && !conn.isClosed()) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                System.err.println("Error al tancar la connexió: " + e.getMessage());
+    public static List<Tasca> obtenirTasques() throws SQLException {
+        List<Tasca> tasques = new ArrayList<>();
+        Connection conn = new Connexio().connecta();
+        String sql = "SELECT * FROM Tasca";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Tasca tasca = new Tasca(
+                    rs.getDate("data_creacio"),
+                    rs.getDate("data_execucio"),
+                    rs.getString("descripcio"),
+                    rs.getString("estat")
+                );
+                tasques.add(tasca);
             }
         }
+        return tasques;
     }
 }

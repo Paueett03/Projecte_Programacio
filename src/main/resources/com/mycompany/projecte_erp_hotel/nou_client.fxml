@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Nou_client">
+<AnchorPane id="AnchorPane" prefHeight="410.0" prefWidth="666.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Nou_client">
    <children>
       <GridPane layoutX="31.0" layoutY="69.0" prefHeight="27.0" prefWidth="202.0">
          <columnConstraints>
@@ -64,7 +64,7 @@
             <Label text="Document Identitat: " />
          </children>
       </GridPane>
-      <GridPane layoutX="8.9619140625" layoutY="212.0">
+      <GridPane layoutX="19.9619140625" layoutY="189.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -91,7 +91,7 @@
             <DatePicker fx:id="dataNaixement" prefHeight="24.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="13.9619140625" layoutY="260.0">
+      <GridPane layoutX="21.9619140625" layoutY="245.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -117,7 +117,7 @@
             <TextField fx:id="email" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="281.9619140625" layoutY="299.0">
+      <GridPane layoutX="5.9619140625" layoutY="297.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -130,7 +130,7 @@
             <TextField fx:id="targeta" prefHeight="24.0" prefWidth="191.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="282.0" layoutY="344.0">
+      <GridPane layoutX="327.0" layoutY="297.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -143,7 +143,7 @@
             <Label text="Data de registre: " />
          </children>
       </GridPane>
-      <Button layoutX="31.0" layoutY="332.0" mnemonicParsing="false" onAction="#guardarComoCliente" text="Crear" />
-      <Button layoutX="133.0" layoutY="332.0" mnemonicParsing="false" onAction="#borrarCampos" text="Borrar" />
+      <Button layoutX="275.0" layoutY="356.0" mnemonicParsing="false" onAction="#guardarComoCliente" text="Crear" />
+      <Button layoutX="340.0" layoutY="356.0" mnemonicParsing="false" onAction="#borrarCampos" text="Borrar" />
    </children>
 </AnchorPane>

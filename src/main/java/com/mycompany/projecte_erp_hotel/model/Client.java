@@ -60,7 +60,7 @@ public class Client extends Persona {
     }
 
     // Método para verificar si una persona ya existe
-    private int checkExistingPerson(Connection conn, String documentIdentitat, String email) throws SQLException {
+    private int chckPersonaExistente(Connection conn, String documentIdentitat, String email) throws SQLException {
         String sql = "SELECT id_persona FROM Persona WHERE document_identitat = ? OR email = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, documentIdentitat);
@@ -83,7 +83,7 @@ public class Client extends Persona {
             
             try {
                 // Primero verificamos si la persona existe (por DNI o email)
-                int idPersona = checkExistingPerson(conn, nuevoCliente.getDocumentIdentitat(), nuevoCliente.getEmail());
+                int idPersona = chckPersonaExistente(conn, nuevoCliente.getDocumentIdentitat(), nuevoCliente.getEmail());
                 
                 if (idPersona != -1) {
                     // La persona existe, verificar si ya es cliente
