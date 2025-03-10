@@ -76,7 +76,7 @@ public class Client extends Persona {
     // Método save modificado
     public boolean save(Client nuevoCliente) {
         String sqlPersona = "INSERT INTO Persona (email, data_naixement, nom, cognom, adreça, document_identitat, telefon) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        String sqlClient = "INSERT INTO Client (id_persona, data_registre, tipus_client, targeta_credit) VALUES (?, ?, ?, ?)";
+        String sqlClient = "INSERT INTO Client VALUES (?, ?, ?, ?)";
         
         try (Connection conn = new Connexio().connecta()) {
             conn.setAutoCommit(false);

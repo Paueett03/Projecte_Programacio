@@ -8,14 +8,15 @@ import java.time.LocalDate;
 public class Reserva {
 
     private int id_reserva;
+    private int id_persona; // Cambiamos id_client a id_persona
     private double preu_total_reserva;
     private LocalDate data_reserva;
     private LocalDate data_inici;
     private LocalDate data_fi;
     private TipusReserva tipus_reserva;
-    private tipus_IVA tipusIva; // Campo para almacenar el tipo de IVA
+    private tipus_IVA tipusIva;
 
-    private enum tipus_IVA {
+    public enum tipus_IVA {
         cero(0),
         set(7),
         vint_i_u(21);
@@ -42,46 +43,104 @@ public class Reserva {
     }
 
     public enum TipusReserva {
-        HABITACIO,
-        PAQUETE,
-        OTRO
+        Simple,
+        Doble,
+        Suite
     }
 
     public void insertarReserva() throws SQLException {
-        // Establecemos la conexión con la base de datos
         Connexio connexio = new Connexio();
         Connection conn = connexio.connecta();
 
-        // Sentencia SQL para insertar los datos
-        String sql = "INSERT INTO Reserva (preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, tipus_iva) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO Reserva (id_client, preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, Tipus_IVA) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Establecemos los valores de los parámetros de la consulta
-            stmt.setDouble(1, preu_total_reserva);
-            stmt.setDate(2, java.sql.Date.valueOf(data_reserva));
-            stmt.setDate(3, java.sql.Date.valueOf(data_inici));
-            stmt.setDate(4, java.sql.Date.valueOf(data_fi));
-            stmt.setString(5, tipus_reserva.name());  // Convertir el enum a String
-            stmt.setInt(6, tipusIva.getValor());  // Establecer el valor del tipo de IVA
+            stmt.setInt(1, id_persona); // Usamos id_persona que és el id_client
+            stmt.setDouble(2, preu_total_reserva);
+            stmt.setDate(3, java.sql.Date.valueOf(data_reserva));
+            stmt.setDate(4, java.sql.Date.valueOf(data_inici));
+            stmt.setDate(5, java.sql.Date.valueOf(data_fi));
+            stmt.setString(6, tipus_reserva.name());
+            stmt.setInt(7, tipusIva.getValor());
 
-            // Ejecutamos la inserción
             int filasAfectadas = stmt.executeUpdate();
             if (filasAfectadas > 0) {
-                System.out.println("Reserva insertada correctamente.");
+                System.out.println("Reserva generada correctament.");
             }
         } catch (SQLException e) {
-            System.err.println("Error al insertar la reserva: " + e.getMessage());
+            System.err.println("Error al generar la reserva: " + e.getMessage());
         } finally {
-            // Cerramos la conexión
             try {
                 if (conn != null && !conn.isClosed()) {
                     conn.close();
                 }
             } catch (SQLException e) {
-                System.err.println("Error al cerrar la conexión: " + e.getMessage());
+                System.err.println("Error al tancar la conexió: " + e.getMessage());
             }
         }
     }
 
+    public int getId_reserva() {
+        return id_reserva;
+    }
+
+    public int getId_persona() {
+        return id_persona;
+    }
+
+    public double getPreu_total_reserva() {
+        return preu_total_reserva;
+    }
+
+    public LocalDate getData_reserva() {
+        return data_reserva;
+    }
+
+    public LocalDate getData_inici() {
+        return data_inici;
+    }
+
+    public LocalDate getData_fi() {
+        return data_fi;
+    }
+
+    public TipusReserva getTipus_reserva() {
+        return tipus_reserva;
+    }
+
+    public tipus_IVA getTipusIva() {
+        return tipusIva;
+    }
+
+    public void setId_reserva(int id_reserva) {
+        this.id_reserva = id_reserva;
+    }
+
+    public void setId_persona(int id_persona) {
+        this.id_persona = id_persona;
+    }
+
+    public void setPreu_total_reserva(double preu_total_reserva) {
+        this.preu_total_reserva = preu_total_reserva;
+    }
+
+    public void setData_reserva(LocalDate data_reserva) {
+        this.data_reserva = data_reserva;
+    }
+
+    public void setData_inici(LocalDate data_inici) {
+        this.data_inici = data_inici;
+    }
+
+    public void setData_fi(LocalDate data_fi) {
+        this.data_fi = data_fi;
+    }
+
+    public void setTipus_reserva(TipusReserva tipus_reserva) {
+        this.tipus_reserva = tipus_reserva;
+    }
+
+    public void setTipusIva(tipus_IVA tipusIva) {
+        this.tipusIva = tipusIva;
+    }
 }

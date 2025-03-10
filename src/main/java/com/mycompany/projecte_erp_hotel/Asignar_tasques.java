@@ -12,37 +12,37 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class Asignar_tasques {
     // Definición de los elementos de la interfaz de usuario
-    @FXML private ComboBox<String> empleatComboBox;
-    @FXML private DatePicker dataCreacio;
+    @FXML private ComboBox<String> empleats;
     @FXML private DatePicker dataExecucio;
     @FXML private TextArea descripcio;
-    @FXML private ComboBox<String> estat;
+    String estat = "Pendent";
+    LocalDate dataCreacio = LocalDate.now();
 
     private ObservableList<String> empleatsList = FXCollections.observableArrayList();
-
     @FXML
     public void initialize() {
         carregarEmpleats(); // Carga la lista de empleados en el ComboBox
-        estat.setItems(FXCollections.observableArrayList("Pendent", "Completada")); // Establece los estados posibles
     }
 
 private void carregarEmpleats() {
     // Consulta SQL para obtener solo los nombres de los empleados
-    String sql = "SELECT nom FROM Persona INNER JOIN Empleat ON Persona.id_persona = Empleat.id_persona";
+    String sql = "SELECT nom, cognom FROM Persona INNER JOIN Empleat ON Persona.id_persona = Empleat.id_empleat";
 
     try (Connection conn = new Connexio().connecta(); 
          PreparedStatement stmt = conn.prepareStatement(sql);
          ResultSet rs = stmt.executeQuery()) {
         
         while (rs.next()) {
-            String nom = rs.getString("nom"); // Obtener solo el nombre
-            empleatsList.add(nom); // Añadir el nombre a la lista
+            String nom = rs.getString("nom");
+            String cognom = rs.getString("cognom");
+            empleatsList.add(nom+" "+cognom); // Añadir el nombre i el apellido a la lista
         }
 
-        empleatComboBox.setItems(empleatsList); // Asignar la lista al ComboBox
+        empleats.setItems(empleatsList); // Asignar la lista al ComboBox
     } catch (SQLException e) {
         e.printStackTrace(); // Mostrar errores en consola
     }
@@ -51,15 +51,14 @@ private void carregarEmpleats() {
     @FXML
     private void guardarTasca() throws SQLException {
         // Verifica que todos los campos estén completos
-        if (empleatComboBox.getValue() == null || dataCreacio.getValue() == null ||
-            dataExecucio.getValue() == null || descripcio.getText().isEmpty() ||
-            estat.getValue() == null) {
+        if (empleats.getValue() == null || dataCreacio == null ||
+            dataExecucio.getValue() == null || descripcio.getText().isEmpty()) {
             mostrarAlert("Error", "Tots els camps són obligatoris.", Alert.AlertType.ERROR);
-            return;
+            borrarCampos();
         }
         
         // Crea una nueva tarea con los datos
-        Tasca novaTasca = new Tasca(Date.valueOf(dataCreacio.getValue()), Date.valueOf(dataExecucio.getValue()), descripcio.getText(), estat.getValue());
+        Tasca novaTasca = new Tasca(Date.valueOf(dataCreacio), Date.valueOf(dataExecucio.getValue()), descripcio.getText(), estat);
         novaTasca.insertarTasca(); // Inserta la tarea en la base de datos
         mostrarAlert("Èxit", "Tasca assignada correctament.", Alert.AlertType.INFORMATION);
     }
@@ -75,9 +74,9 @@ private void carregarEmpleats() {
     
         @FXML
     public void borrarCampos() {
-        dataCreacio.valueProperty().set(null);
         dataExecucio.valueProperty().set(null);
         descripcio.clear();
-        estat.valueProperty().set(null);
+        empleats.setValue(null);
+        
     }
 }

@@ -39,6 +39,10 @@ public class PrimaryController {
 
     @FXML
     private void cargarNuevaReserva() {
+        if (getClass().getResource("/com/mycompany/projecte_erp_hotel/nova_reserva.fxml") == null) {
+            System.out.println("Error: No se encontró el archivo FXML.");
+            return;
+        }
         cambiarVista("/com/mycompany/projecte_erp_hotel/nova_reserva.fxml");
     }
 

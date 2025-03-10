@@ -89,18 +89,4 @@ public class Persona {
     public void setTelefon(String telefon) {
         this.telefon = telefon;
     }
-
-//    @Override
-//    public String toString() {
-//        return "Persona{" +
-//                "idPersona=" + idPersona +
-//                ", email='" + email + '\'' +
-//                ", dataNaixement=" + dataNaixement +
-//                ", nom='" + nom + '\'' +
-//                ", cognom='" + cognom + '\'' +
-//                ", adreça='" + adreça + '\'' +
-//                ", documentIdentitat='" + documentIdentitat + '\'' +
-//                ", telefon='" + telefon + '\'' +
-//                '}';
-//    }
 }

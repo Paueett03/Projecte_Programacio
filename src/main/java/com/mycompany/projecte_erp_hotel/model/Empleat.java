@@ -85,7 +85,7 @@ public class Empleat extends Persona {
     // Méttodo para insertar los datos en la base de datos
     public boolean save(Empleat nouEmpleat) {
         String sqlPersona = "INSERT INTO Persona (email, data_naixement, nom, cognom, adreça, document_identitat, telefon) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        String sqlEmpleat = "INSERT INTO Empleat (id_persona, llocFeina, data_contractacio, salariBrut, estat_laboral) VALUES (?, ?, ?, ?, ?)";
+        String sqlEmpleat = "INSERT INTO Empleat VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = new Connexio().connecta()) {
             conn.setAutoCommit(false);
