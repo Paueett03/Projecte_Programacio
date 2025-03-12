@@ -1,7 +1,4 @@
 # Pràctica Base de dades
-
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
-
 ---
 
 ## Disseny Conceptual
@@ -174,3 +171,5 @@ ALTER TABLE Habitacio
 ADD COLUMN id_reserva INT,
 ADD CONSTRAINT habitacio_reserva
 FOREIGN KEY (id_reserva) REFERENCES Reserva(id_reserva);
+```
+
