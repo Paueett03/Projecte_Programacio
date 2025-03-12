@@ -186,6 +186,7 @@ FOREIGN KEY (id_reserva) REFERENCES Reserva(id_reserva);
 ### Error al cambiar d'escena
 
 ![Error_cambiar_escena](image.png)
+
 Em donaba un error de que no trobaba la ruta del fitxer fxml que buscaba. Això era perquè el fitxer que intentaba buscar tenia el nom en castellà, mentre que el nom del fitxer el estaba en català.
 
 ### Error en crear i guardar una nova reserva en la base de dades
@@ -195,17 +196,23 @@ Vaig tindre un problema al crear una nova  reserva el qual consisteix en que qua
 ### Error de valor null en el camp id_reserva de la Taula Factures
 
 ![Error_valorNULL](image1.png)
+
 Aquest error va passar perquè se’m va oblidar ficar-li el id_reserva al objecte Factura quan el creava.
 
 ![](image2.png)
+
 Ho vaig solucionar modificant la consulta per a que també em consultés el id_reserva (per solucionar el error de manera ràpida i per a que no em donès error al crear un objecte, en comptes de modificar el construcor i afegir-li aquest camp, simplement vaig crear la variable del camp i li vaig fer un getter i setter).
 
 ![](image3.png)
+
 Desprès vaig crear un nou construcor per poder crear la factura amb el nou camp i posteriorment visualitzar-lo.
 
 ![](image4.png)
+
 Per poder visualitzar el nou camp afegir, simplement he de afegir el nou camp en el controlador també.
+
 ![](image5.png)
+
 ![](image6.png)
 
 ---
