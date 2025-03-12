@@ -1,5 +1,4 @@
 # Pràctica Base de dades
-
 ---
 
 ## Disseny Conceptual
