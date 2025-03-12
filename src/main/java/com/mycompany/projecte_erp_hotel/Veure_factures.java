@@ -19,6 +19,9 @@ public class Veure_factures {
 
     @FXML
     private TableColumn<Factura, Integer> idFacturaCol; // Columna per l'ID de la factura
+    
+    @FXML
+    private TableColumn<Factura, Integer> idReservaCol; // Columna per l'ID de la reserva
 
     @FXML
     private TableColumn<Factura, String> dataEmisioCol; // Columna per la data d'emissió
@@ -39,6 +42,7 @@ public class Veure_factures {
     public void initialize() {
         // Configurar les columnes de la taula amb els atributs de la classe Factura
         idFacturaCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getId_factura()));
+        idReservaCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getId_reserva()));
         dataEmisioCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getData_emisio().toString()));
         metodePagamentCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getMetode_pagament()));
         baseImposableCol.setCellValueFactory(cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getBase_imposable()));
@@ -61,6 +65,7 @@ public class Veure_factures {
             // Recórrer els resultats i crear objectes Factura
             while (rs.next()) {
                 Factura factura = new Factura(
+                        rs.getInt("id_reserva"),
                         rs.getDouble("base_imposable"),
                         rs.getDate("data_emisio").toLocalDate(),
                         rs.getString("metode_pagament"),

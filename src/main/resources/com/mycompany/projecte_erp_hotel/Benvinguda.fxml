@@ -8,12 +8,12 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Nou_client_i_empleatController">
    <children>
-      <Text layoutX="67.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Benvingut/da a la meva APP">
+      <Text layoutX="108.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Benvingut/da a la meva APP">
          <font>
             <Font size="33.0" />
          </font>
       </Text>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="215.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="266.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/festa.png" />
          </image>

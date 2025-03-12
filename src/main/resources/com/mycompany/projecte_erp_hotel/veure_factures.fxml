@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Veure_factures">
-    
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Veure_factures">
+   <children>
+      <TableView fx:id="facturaTable" layoutY="-1.0" prefHeight="400.0" prefWidth="719.0">
+        <columns>
+          <TableColumn fx:id="idFacturaCol" prefWidth="95.0" text="ID Factura" />
+            <TableColumn fx:id="idReservaCol" prefWidth="97.0" text="ID Reserva" />
+          <TableColumn fx:id="dataEmisioCol" prefWidth="105.0" text="Data Emissio" />
+            <TableColumn fx:id="metodePagamentCol" prefWidth="157.0" text="Metode Pagament" />
+            <TableColumn fx:id="baseImposableCol" prefWidth="130.0" text="Base Impossable" />
+            <TableColumn fx:id="ivaCol" minWidth="0.0" prefWidth="48.0" text="IVA" />
+            <TableColumn fx:id="totalCol" minWidth="0.0" prefWidth="86.0" text="TOTAL" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>

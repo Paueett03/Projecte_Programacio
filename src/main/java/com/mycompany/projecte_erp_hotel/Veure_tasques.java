@@ -1,109 +1,90 @@
 package com.mycompany.projecte_erp_hotel;
+
 import com.mycompany.projecte_erp_hotel.model.Connexio;
 import com.mycompany.projecte_erp_hotel.model.Tasca;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 
 public class Veure_tasques {
 
-    @FXML
-    private TextField txtBuscarEmpleat;
-    @FXML
-    private ListView<String> listViewTasques;
-    @FXML
-    private Button btnActualitzar;
+    @FXML private TextField buscarEmpleat;
+    @FXML private ListView<String> llistaTasques;
 
+    private ObservableList<String> tasquesList = FXCollections.observableArrayList(); // Llista observable per a les tasques
+
+    @FXML
     public void initialize() {
-        // Configurar el botón para actualizar las tareas
-        btnActualitzar.setOnAction(event -> actualitzarTasques());
+        llistaTasques.setItems(tasquesList); // Enllaçar la llista observable amb la vista
     }
 
-    private void actualitzarTasques() {
-        String nomEmpleat = txtBuscarEmpleat.getText().trim();
-        
-        if (nomEmpleat.isEmpty()) {
-            mostrarAlerta("Error", "El nom de l'empleat no pot estar buit.");
-            return;
+    @FXML
+    private void buscarTasques() {
+        tasquesList.clear();
+        String nomComplet = buscarEmpleat.getText().trim(); // Obtenir el text introduït i eliminar espais sobrants
+        if (nomComplet.isEmpty()) { // Verificar si el camp està buit
+            mostrarAlert("Error", "Has d'introduir el nom de l'empleat.", Alert.AlertType.ERROR);
+            return; // Sortir del mètode si no hi ha nom
         }
         
-        try {
-            int idEmpleat = obtenirIdEmpleatPerNom(nomEmpleat);
+        String[] nomParts = nomComplet.split(" ", 2); // Dividir el text en nom i cognom
+        if (nomParts.length < 2) { // Verificar si s'ha introduït nom i cognom
+            mostrarAlert("Error", "Introdueix nom i cognom.", Alert.AlertType.ERROR);
+            return; // Sortir del mètode si falta alguna part
+        }
+        
+        String nom = nomParts[0]; // Assignar la primera part com a nom
+        String cognom = nomParts[1]; // Assignar la segona part com a cognom
 
-            if (idEmpleat == -1) {
-                mostrarAlerta("Error", "No s'ha trobat cap empleat amb aquest nom.");
-                return;
+        // Consulta SQL per trobar les tasques de l'empleat
+        String sql = "SELECT t.descripcio, t.data_creacio, t.data_execucio, t.estat " +
+                     "FROM Tasca t " +
+                     "INNER JOIN Assig_Empleat_Tasca a ON t.id_tasca = a.id_tasca " +
+                     "INNER JOIN Empleat e ON a.id_empleat = e.id_empleat " +
+                     "INNER JOIN Persona p ON e.id_empleat = p.id_persona " +
+                     "WHERE p.nom = ? AND p.cognom = ?";
+
+        try (Connection conn = new Connexio().connecta(); // Obrir la connexió a la base de dades
+             PreparedStatement stmt = conn.prepareStatement(sql)) { // Preparar la consulta SQL
+
+            stmt.setString(1, nom); // Assignar el nom al primer paràmetre de la consulta
+            stmt.setString(2, cognom); // Assignar el cognom al segon paràmetre de la consulta
+
+            try (ResultSet rs = stmt.executeQuery()) { // Executar la consulta i obtenir els resultats
+                while (rs.next()) { // Iterar pels resultats trobats
+                    String descripcio = rs.getString("descripcio"); // Obtenir la descripció de la tasca
+                    Date dataCreacio = rs.getDate("data_creacio"); // Obtenir la data de creació
+                    Date dataExecucio = rs.getDate("data_execucio"); // Obtenir la data d'execució
+                    String estat = rs.getString("estat"); // Obtenir l'estat de la tasca
+                    
+                    // Format de la informació de la tasca
+                    String tascaInfo = String.format("%s - Creació: %s, Execució: %s, Estat: %s",
+                            descripcio, dataCreacio, dataExecucio, estat);
+                    tasquesList.add(tascaInfo); // Afegir la informació a la llista
+                }
+                
+                if (tasquesList.isEmpty()) { // Si no s'han trobat tasques
+                    mostrarAlert("Informació", "No s'han trobat tasques per a aquest empleat.", Alert.AlertType.INFORMATION);
+                }
             }
-
-            // Crear una nueva tasca (aquí puedes personalizar los datos)
-//            Tasca novaTasca = new Tasca();
-//            novaTasca.setdataCreacio(new java.sql.Date(System.currentTimeMillis())); // Fecha actual
-//            novaTasca.setdataExecucio(null); // La puedes dejar vacía o pedirla al usuario
-//            novaTasca.setdescripcio("Nova tasca assignada");
-//            novaTasca.setestat("Pendent");
-
-            // Insertar y asignar la tasca
-//            novaTasca.assignarTascaAEmpleat(idEmpleat);
-
-            // Actualizar la lista de tareas
-//            carregarTasquesEmpleat(idEmpleat);
-
-            mostrarAlerta("Èxit", "Tasca creada i assignada correctament!");
-
-        } catch (SQLException e) {
-            mostrarAlerta("Error", "No s'ha pogut actualitzar les tasques: " + e.getMessage());
+        } catch (SQLException e) { // Capturar errors de SQL
+            mostrarAlert("Error", "Error en carregar les tasques: " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace(); // Imprimir l'error a la consola per depuració
         }
     }
 
-    private int obtenirIdEmpleatPerNom(String nomEmpleat) throws SQLException {
-        Connection conn = new Connexio().connecta();
-        String sql = "SELECT id_empleat FROM Empleat WHERE nom = ?";
-        
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nomEmpleat);
-            ResultSet rs = stmt.executeQuery();
-            
-            if (rs.next()) {
-                return rs.getInt("id_empleat");
-            }
-        }
-        return -1; // Si no encuentra al empleado
-    }
-
-//    private void carregarTasquesEmpleat(int idEmpleat) throws SQLException {
-//        Connection conn = new Connexio().connecta();
-//        String sql = """
-//            SELECT t.descripcio, t.estat
-//            FROM Tasca t
-//            INNER JOIN Assig_Empleat_Tasca aet ON t.id_tasca = aet.id_tasca
-//            WHERE aet.id_empleat = ?
-//        """;
-//        
-//        listViewTasques.getItems().clear();
-//        
-//        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setInt(1, idEmpleat);
-//            ResultSet rs = stmt.executeQuery();
-//            
-//            while (rs.next()) {
-//                String descripcio = rs.getString("descripcio");
-//                String estat = rs.getString("estat");
-//                listViewTasques.getItems().add(descripcio + " - " + estat);
-//            }
-//        }
-//    }
-
-    private void mostrarAlerta(String titol, String missatge) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titol);
-        alert.setHeaderText(null);
-        alert.setContentText(missatge);
-        alert.showAndWait();
+    private void mostrarAlert(String titol, String missatge, Alert.AlertType tipus) {
+        Alert alert = new Alert(tipus); // Crear una alerta
+        alert.setTitle(titol); // Establir el títol de l'alerta
+        alert.setHeaderText(null); // No mostrar capçalera
+        alert.setContentText(missatge); // Establir el missatge de l'alerta
+        alert.showAndWait(); // Mostrar l'alerta i esperar que l'usuari la tanqui
     }
 }

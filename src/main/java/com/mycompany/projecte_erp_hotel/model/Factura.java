@@ -13,6 +13,7 @@ public class Factura {
     private String metode_pagament;
     private double iva;
     private double total;
+    private int id_reserva;
 
     public Factura(double base_imposable, LocalDate data_emisio, String metode_pagament, double iva, double total) {
         this.base_imposable = base_imposable;
@@ -20,6 +21,22 @@ public class Factura {
         this.metode_pagament = metode_pagament;
         this.iva = iva;
         this.total = total;
+    }
+        public Factura(int id_reserva, double base_imposable, LocalDate data_emisio, String metode_pagament, double iva, double total) {
+        this.base_imposable = base_imposable;
+        this.data_emisio = data_emisio;
+        this.metode_pagament = metode_pagament;
+        this.iva = iva;
+        this.total = total;
+        this.id_reserva = id_reserva;
+    }
+
+    public int getId_reserva() {
+        return id_reserva;
+    }
+
+    public void setId_reserva(int id_reserva) {
+        this.id_reserva = id_reserva;
     }
 
     public int getId_factura() {
@@ -72,13 +89,14 @@ public class Factura {
 
     // Guardar la factura en la base de datos
     public void save() {
-        String sql = "INSERT INTO Factura (base_imposable, data_emisio, metode_pagament, iva, total) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Factura (id_reserva, base_imposable, data_emisio, metode_pagament, iva, total) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = new Connexio().connecta(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDouble(1, this.base_imposable);
-            pstmt.setDate(2, java.sql.Date.valueOf(this.data_emisio));  // Convertir LocalDate a java.sql.Date
-            pstmt.setString(3, this.metode_pagament);
-            pstmt.setDouble(4, this.iva);
-            pstmt.setDouble(5, this.total);
+            pstmt.setInt(1, id_reserva);
+            pstmt.setDouble(2, this.base_imposable);
+            pstmt.setDate(3, java.sql.Date.valueOf(this.data_emisio));  // Convertir LocalDate a java.sql.Date
+            pstmt.setString(4, this.metode_pagament);
+            pstmt.setDouble(5, this.iva);
+            pstmt.setDouble(6, this.total);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

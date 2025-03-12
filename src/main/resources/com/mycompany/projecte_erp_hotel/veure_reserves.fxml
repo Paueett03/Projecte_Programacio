@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="279.0" prefWidth="579.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.mycompany.projecte_erp_hotel.Veure_reserves">
+<AnchorPane id="AnchorPane" prefHeight="279.0" prefWidth="579.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Veure_reserves">
    <children>
       <GridPane layoutX="14.0" layoutY="27.0">
          <columnConstraints>
@@ -19,7 +18,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ListView fx:id="llistaReserves" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+            <ListView fx:id="llistaReserves" prefHeight="200.0" prefWidth="449.0" GridPane.columnIndex="1" />
             <Label text="Reserves: " />
          </children>
       </GridPane>
@@ -31,10 +30,6 @@
          <rowConstraints>
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
-         <children>
-            <Label fx:id="missatgeError" prefHeight="17.0" prefWidth="76.0" text="Label" GridPane.columnIndex="1" />
-            <Label text="Error: " />
-         </children>
       </GridPane>
    </children>
 </AnchorPane>

@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.mycompany.projecte_erp_hotel.Veure_tasques">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Veure_tasques">
    <children>
       <GridPane layoutX="39.0" layoutY="59.0">
          <columnConstraints>
@@ -22,7 +21,7 @@
          </rowConstraints>
          <children>
             <Label text="Empleat: " />
-            <TextField prefHeight="24.0" prefWidth="196.0" GridPane.columnIndex="1" />
+            <TextField fx:id="buscarEmpleat" prefHeight="24.0" prefWidth="196.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <GridPane layoutX="36.9619140625" layoutY="135.0">
@@ -34,10 +33,10 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ListView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+            <ListView fx:id="llistaTasques" prefHeight="200.0" prefWidth="467.0" GridPane.columnIndex="1" />
             <Label text="Tasques: " />
          </children>
       </GridPane>
-      <Button layoutX="359.0" layoutY="59.0" mnemonicParsing="false" text="Buscar" />
+      <Button layoutX="359.0" layoutY="59.0" mnemonicParsing="false" onAction="#buscarTasques" text="Buscar" />
    </children>
 </AnchorPane>
