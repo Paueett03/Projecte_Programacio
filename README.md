@@ -220,5 +220,7 @@ Per poder visualitzar el nou camp afegir, simplement he de afegir el nou camp en
 ## Manual d'us
 
 a
+https://github.com/user-attachments/assets/07bacf48-ab64-42fd-aeb2-678d826d5746
+
 
 ---
