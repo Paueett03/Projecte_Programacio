@@ -219,8 +219,8 @@ Per poder visualitzar el nou camp afegir, simplement he de afegir el nou camp en
 
 ## Manual d'us
 
-a
-[![](https://markdown-videos-data.dev/youtube/0UjjLZcOEPA)](https://youtu.be/0UjjLZcOEPA)
+Manual: https://youtu.be/0UjjLZcOEPA
 
+[![](https://markdown-videos.deta.dev/youtube/0UjjLZcOEPA)](https://youtu.be/0UjjLZcOEPA)
 
 ---
