@@ -143,11 +143,11 @@ INSERT INTO Empleat VALUES
 (2, 'Cambrer', '2021-09-15', 20000, 'Baixa'),
 (3, 'Neteja', '2019-04-22', 18000, 'Actiu');
 
-INSERT INTO Reserva (id_client, preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, Tipus_IVA) 
+INSERT INTO Reserva (id_client, id_habitacio, preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, Tipus_IVA) 
 VALUES 
-(1, 140.00, '2024-02-01', '2024-02-05', '2024-02-07', 'Vacances', '10%'),
-(2, 300.00, '2024-02-02', '2024-02-10', '2024-02-15', 'Negocis', '21%'),
-(3, 90.00, '2024-02-03', '2024-02-12', '2024-02-14', 'Oci', '7%');
+(1, 1, 140.00, '2024-02-01', '2024-02-05', '2024-02-07', 'Vacances', '10%'),
+(2, 2, 300.00, '2024-02-02', '2024-02-10', '2024-02-15', 'Negocis', '21%'),
+(3, 1, 90.00, '2024-02-03', '2024-02-12', '2024-02-14', 'Oci', '7%');
 
 INSERT INTO Factura (id_reserva, base_imposable, data_emisio, metode_pagament, iva, total) 
 VALUES 
