@@ -215,6 +215,12 @@ Per poder visualitzar el nou camp afegir, simplement he de afegir el nou camp en
 
 ![](image6.png)
 
+### Error taula Habitació
+
+Aquí enb vaig confondre a l'hora de crear la base de dades i en la relació de Habitació i Reserves, vaig ficar-li la clau forana id_reserva a Habitació, en comptes de en la Taula Reserva ficar-li la clau forana id_habitacio.
+
+![]()
+
 ---
 
 ## Manual d'us
