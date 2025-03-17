@@ -87,7 +87,7 @@ public class Client extends Persona {
                 
                 if (idPersona != -1) {
                     // La persona existe, verificar si ya es cliente
-                    String checkClient = "SELECT id_client FROM Client WHERE id_persona = ?";
+                    String checkClient = "SELECT id_client FROM Client WHERE id_client = ?";
                     try (PreparedStatement pstmtCheck = conn.prepareStatement(checkClient)) {
                         pstmtCheck.setInt(1, idPersona);
                         ResultSet rs = pstmtCheck.executeQuery();

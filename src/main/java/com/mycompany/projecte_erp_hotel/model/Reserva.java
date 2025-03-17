@@ -52,7 +52,7 @@ public class Reserva {
         Connexio connexio = new Connexio();
         Connection conn = connexio.connecta();
 
-        String sql = "INSERT INTO Reserva (id_client, preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, Tipus_IVA) "
+        String sql = "INSERT INTO Reserva (id_client, id_habitacio, preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, Tipus_IVA) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id_persona); // Usamos id_persona que és el id_client

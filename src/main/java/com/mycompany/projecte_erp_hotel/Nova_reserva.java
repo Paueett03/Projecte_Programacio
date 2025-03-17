@@ -35,7 +35,7 @@ public class Nova_reserva {
     @FXML
     public void initialize() {
         try {
-            // Configuramos los mapas de conversión
+            // Configuramos los mapas
             mapaTipusReserva.put("Simple", Reserva.TipusReserva.Simple);
             mapaTipusReserva.put("Doble", Reserva.TipusReserva.Doble);
             mapaTipusReserva.put("Suite", Reserva.TipusReserva.Suite);

@@ -96,7 +96,7 @@ public class Empleat extends Persona {
                 
                 if (idPersona != -1) {
                     // La persona existe, verificar si ya es empleado
-                    String checkEmpleat = "SELECT id_empleat FROM Empleat WHERE id_persona = ?";
+                    String checkEmpleat = "SELECT id_empleat FROM Empleat WHERE id_empleat = ?";
                     try (PreparedStatement pstmtCheck = conn.prepareStatement(checkEmpleat)) {
                         pstmtCheck.setInt(1, idPersona);
                         ResultSet rs = pstmtCheck.executeQuery();

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.PrimaryController">
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <MenuBar>
             <menus>
@@ -20,7 +20,9 @@
                 </Menu>
                 <Menu text="Tasques">
                     <MenuItem onAction="#cargarNuevaTarea" text="Nova Tasca" />
-                    <MenuItem onAction="#cargarVerTareas" text="Veure Tasques" />
+                    <MenuItem onAction="#cargarVerTareas" text="Veure Tasques de Empleat" />
+               <MenuItem text="Veure Empleats de Tasca" />
+               <MenuItem text="Editar Tasques" />
                 </Menu>
                 <Menu text="Facturas">
                     <MenuItem onAction="#cargarVerFacturas" text="Veure Factures" />
