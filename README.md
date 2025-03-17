@@ -82,13 +82,15 @@ CREATE TABLE Habitacio (
 CREATE TABLE Reserva (
     id_reserva INT PRIMARY KEY AUTO_INCREMENT,
     id_client INT,
+    id_habitacio INT,
     preu_total_reserva DOUBLE,
     data_reserva DATE,
     data_inici DATE,
     data_fi DATE,
     tipus_reserva VARCHAR(100),
     Tipus_IVA VARCHAR(50),
-    FOREIGN KEY (id_client) REFERENCES Client(id_client)
+    FOREIGN KEY (id_client) REFERENCES Client(id_client),
+    FOREIGN KEY (id_habitacio) REFERENCES Habitacio (id_habitacio)
 );
 
 CREATE TABLE Factura (
@@ -164,13 +166,6 @@ VALUES
 (1, 1),
 (2, 2),
 (3, 3);
-
--- Vaig fer aquesta modificació ja que s'em va oblidar ficar la clau forana
--- de la taula Habitació per poder-la relacionar amb la taula Reserva.
-ALTER TABLE Habitacio
-ADD COLUMN id_reserva INT,
-ADD CONSTRAINT habitacio_reserva
-FOREIGN KEY (id_reserva) REFERENCES Reserva(id_reserva);
 ```
 
 ---
@@ -219,7 +214,11 @@ Per poder visualitzar el nou camp afegir, simplement he de afegir el nou camp en
 
 Aquí enb vaig confondre a l'hora de crear la base de dades i en la relació de Habitació i Reserves, vaig ficar-li la clau forana id_reserva a Habitació, en comptes de en la Taula Reserva ficar-li la clau forana id_habitacio.
 
-![]()
+![](errorhab_res.png)
+
+Per solucionar aquest problema vaig modificar la base de dades. Com que no sé com eliminar una constraint, vaig eliminar tota la base de dades i crearla de nou.
+
+![](createRes.png)
 
 ---
 
