@@ -146,6 +146,9 @@ public class Nova_reserva {
         return -1;
     }
     
+    
+    
+    
     private void mostrarMissatge(Alert.AlertType tipus, String titol, String missatge) {
         Alert alert = new Alert(tipus);
         alert.setTitle(titol);
