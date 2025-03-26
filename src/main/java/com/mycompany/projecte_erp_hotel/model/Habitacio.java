@@ -7,13 +7,13 @@ import java.sql.SQLException;
 public class Habitacio {
 
     private int id_habitacio;
-    private int numero_habitacio;
+    private String numero_habitacio;
     
     // Enumeración para tipo de habitación
     public enum TipusHab {
         Simple,
         Doble,
-        Suit
+        Suite
     }
     private TipusHab tipus_hab;
     
@@ -30,21 +30,13 @@ public class Habitacio {
         En_neteja
     }
     private EstatHab estat_hab;
-
-    public Habitacio(int numero_habitacio, TipusHab tipus_hab, int capacitat, double preu_nit_AD, double preu_nit_MP, String descripcio) {
-        this.numero_habitacio = numero_habitacio;
-        this.tipus_hab = tipus_hab;
-        this.capacitat = capacitat;
-        this.preu_nit_AD = preu_nit_AD;
-        this.preu_nit_MP = preu_nit_MP;
-        this.descripcio = descripcio;
-    }
-        public Habitacio(int id_habitacio, int numero_habitacio, TipusHab tipus_hab, int capacitat, double preu_nit_AD, double preu_nit_MP, String descripcio, String estat) {
+    
+        public Habitacio(int id_habitacio, String numero_habitacio, TipusHab tipus_hab, int capacitat, double preu_nit_AP, double preu_nit_MP, String descripcio, String estat) {
         this.id_habitacio = id_habitacio;
         this.numero_habitacio = numero_habitacio;
         this.tipus_hab = tipus_hab;
         this.capacitat = capacitat;
-        this.preu_nit_AD = preu_nit_AD;
+        this.preu_nit_AD = preu_nit_AP;
         this.preu_nit_MP = preu_nit_MP;
         this.descripcio = descripcio;
         this.estat = estat;
@@ -59,7 +51,7 @@ public class Habitacio {
         return estat;
     }
 
-    public int getNumero_habitacio() {
+    public String getNumero_habitacio() {
         return numero_habitacio;
     }
 
@@ -91,7 +83,7 @@ public class Habitacio {
         this.id_habitacio = id_habitacio;
     }
 
-    public void setNumero_habitacio(int numero_habitacio) {
+    public void setNumero_habitacio(String numero_habitacio) {
         this.numero_habitacio = numero_habitacio;
     }
 
@@ -127,7 +119,7 @@ public class Habitacio {
     public void save() {
         String sql = "INSERT INTO Habitacio (numero_habitacio, tipus_hab, capacitat, preu_nit_AD, preu_nit_MP, descripcio, estat_hab) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = new Connexio().connecta(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, this.numero_habitacio);
+            pstmt.setString(1, this.numero_habitacio);
             pstmt.setString(2, this.tipus_hab.name());  // Almacenar como String el nombre del enum
             pstmt.setInt(3, this.capacitat);
             pstmt.setDouble(4, this.preu_nit_AD);

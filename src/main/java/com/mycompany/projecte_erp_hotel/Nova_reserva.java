@@ -3,6 +3,7 @@ package com.mycompany.projecte_erp_hotel;
 import com.mycompany.projecte_erp_hotel.model.Reserva;
 import com.mycompany.projecte_erp_hotel.model.Connexio;
 import com.mycompany.projecte_erp_hotel.model.Habitacio;
+import com.mycompany.projecte_erp_hotel.model.Habitacio.TipusHab;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.sql.Connection;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Nova_reserva {
 
@@ -31,20 +34,25 @@ public class Nova_reserva {
     @FXML
     private ComboBox<String> tipusIVACombo;
     @FXML
-    private ComboBox<String> comboPensio;
+    private ComboBox<String> tipusPensioCombo;
+    @FXML
+    private ComboBox<Habitacio> numHab;
 
+    
+    private final ObservableList<Habitacio> habitacions = FXCollections.observableArrayList();
+    
     // Mapas para la conversión entre texto mostrado y valores de enums
-    private Map<String, Reserva.TipusReserva> mapaTipusReserva = new HashMap<>();
-    private Map<String, Reserva.tipus_IVA> mapaTipusIVA = new HashMap<>();
+    private final Map<String, Reserva.TipusReserva> mapaTipusReserva = new HashMap<>();
+    private final Map<String, Reserva.tipus_IVA> mapaTipusIVA = new HashMap<>();
     
     // Mapa para los precios base por tipo de pensión y tipo de habitación
-    private Map<String, Map<String, Double>> mapaPreciosPension = new HashMap<>();
+    private final Map<String, Map<String, Double>> mapaPreciosPension = new HashMap<>();
     
     // Mapa para los valores de IVA
-    private Map<String, Double> mapaValoresIVA = new HashMap<>();
+    private final Map<String, Double> mapaValoresIVA = new HashMap<>();
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         try {
             // Configuramos los mapas
             mapaTipusReserva.put("Simple", Reserva.TipusReserva.Simple);
@@ -80,7 +88,7 @@ public class Nova_reserva {
             // Establecemos valores por defecto para evitar que sean nulos
             tipusReservaCombo.setValue("Simple");
             tipusIVACombo.setValue("21%");
-            comboPensio.setValue("AD");
+            tipusPensioCombo.setValue("AD");
 
             dataReservaPicker.setValue(LocalDate.now());
             
@@ -89,15 +97,69 @@ public class Nova_reserva {
             dataFiPicker.valueProperty().addListener((obs, oldVal, newVal) -> calcularPrecioTotal());
             tipusReservaCombo.valueProperty().addListener((obs, oldVal, newVal) -> calcularPrecioTotal());
             tipusIVACombo.valueProperty().addListener((obs, oldVal, newVal) -> calcularPrecioTotal());
-            comboPensio.valueProperty().addListener((obs, oldVal, newVal) -> calcularPrecioTotal());
+            tipusPensioCombo.valueProperty().addListener((obs, oldVal, newVal) -> calcularPrecioTotal());
 
         } catch (Exception e) {
             System.out.println("Error en inicializació: " + e.getMessage());
             e.printStackTrace();
         }
+        
+    // Això farà que el ComboBox mostri el número d'habitació en lloc de l'objecte Habitacio
+    numHab.setCellFactory(lv -> new ListCell<Habitacio>() {
+        @Override
+        protected void updateItem(Habitacio item, boolean empty) {
+            super.updateItem(item, empty);
+            setText((empty || item == null) ? null : item.getNumero_habitacio());
+        }
+    });
 
-        comboPensio.getItems().addAll("AD", "MP");
+    numHab.setButtonCell(new ListCell<Habitacio>() {
+        @Override
+        protected void updateItem(Habitacio item, boolean empty) {
+            super.updateItem(item, empty);
+            setText((empty || item == null) ? null : item.getNumero_habitacio());
+        }
+    });
+
+        tipusPensioCombo.getItems().addAll("AD", "MP");
+        carregarHabitacions();
     }
+    
+    private void carregarHabitacions() throws SQLException {
+    Connexio connexio = new Connexio();
+    Connection conn = connexio.connecta();
+    if (conn != null) {
+        try {
+            String query = "SELECT id_habitacio, numero_habitacio, tipus, capacitat, preu_nit_AP, preu_nit_MP, descripcio, estat FROM Habitacio";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            habitacions.clear(); // Netejar la llista abans d'afegir dades
+
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String numeroHabitacio = String.valueOf(rs.getInt(2));
+                TipusHab tipus_hab = TipusHab.valueOf(rs.getString(3));
+                int capacitat = rs.getInt(4);
+                double preuNitAP = rs.getDouble(5);
+                double preuNitMP = rs.getDouble(6);
+                String descripcio = rs.getString(7);
+                String estat = rs.getString(8);
+                
+                
+                // Crear un objecte Habitacio i afegir-lo a la llista
+                Habitacio habitacio = new Habitacio(id, numeroHabitacio, tipus_hab, capacitat, preuNitAP, preuNitMP, descripcio, estat);
+                habitacions.add(habitacio);
+            }
+            numHab.setItems(habitacions); // Assignar la llista al ComboBox
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
+        }
+    }
+}
     
     private void calcularPrecioTotal() {
         try {
@@ -106,13 +168,13 @@ public class Nova_reserva {
                 dataFiPicker.getValue() == null || 
                 tipusReservaCombo.getValue() == null || 
                 tipusIVACombo.getValue() == null || 
-                comboPensio.getValue() == null) {
+                tipusPensioCombo.getValue() == null) {
                 return;
             }
             
             // Obtenemos los valores seleccionados
             String tipusReserva = tipusReservaCombo.getValue();
-            String pensio = comboPensio.getValue();
+            String pensio = tipusPensioCombo.getValue();
             String tipusIVA = tipusIVACombo.getValue();
             LocalDate dataInici = dataIniciPicker.getValue();
             LocalDate dataFi = dataFiPicker.getValue();
@@ -176,9 +238,14 @@ public class Nova_reserva {
             // Obtenemos los enumerados a través de los mapas
             Reserva.TipusReserva tipusReserva = mapaTipusReserva.get(tipusReservaCombo.getValue());
             Reserva.tipus_IVA tipusIVA = mapaTipusIVA.get(tipusIVACombo.getValue());
+            
+            // Pillamos la habitacion y el tipo de pension del combobox
+            Habitacio habitacion = numHab.getValue();
+            String tipoPension = tipusPensioCombo.getValue();
+            Double precioTotal = Double.valueOf(preuTotalField.getText());
 
             // Creamos la nueva reserva
-            Reserva novaReserva = new Reserva(preuTotal, dataReserva, dataInici, dataFi, tipusReserva, tipusIVA);
+            Reserva novaReserva = new Reserva(idPersona, dataReserva, dataInici, dataFi, tipusReserva, tipusIVA, tipoPension,habitacion, precioTotal);
             novaReserva.setId_persona(idPersona);
 
             if (true) {
@@ -227,28 +294,11 @@ public class Nova_reserva {
         return -1;
     }
 
-    private Habitacio habitacioSeleccionada;
-
-    @FXML
-    private void calcularPreu() {
-        if (habitacioSeleccionada != null && dataIniciPicker.getValue() != null && dataFiPicker.getValue() != null && comboPensio.getValue() != null) {
-            Reserva reserva = new Reserva(0, dataIniciPicker.getValue(), dataFiPicker.getValue(), comboPensio.getValue(), habitacioSeleccionada);
-            preuTotalField.setText("Preu Total: " + reserva.getPreu_total_reserva());
-        }
-    }
-
     private void mostrarMissatge(Alert.AlertType tipus, String titol, String missatge) {
         Alert alert = new Alert(tipus);
         alert.setTitle(titol);
         alert.setHeaderText(null);
         alert.setContentText(missatge);
         alert.showAndWait();
-    }
-    
-    public double convertirPreuTotalANum(){
-        double preuTotalNum;
-        preuTotalNum = Integer.parseInt(preuTotalField.getText());
-        
-        return preuTotalNum;
     }
 }

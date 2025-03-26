@@ -25,7 +25,6 @@ public class Empleat extends Persona {
         this.estatLaboral = estatLaboral;
     }
 
-    public Empleat() {}
 
     // Getters y Setters
     public int getIdEmpleat() {

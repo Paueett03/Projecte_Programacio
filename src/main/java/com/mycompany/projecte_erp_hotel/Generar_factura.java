@@ -59,8 +59,7 @@ public class Generar_factura {
             double total = reservaDades.getPreuTotal();
 
             // Crear l'objecte Factura i guardar-lo a la base de dades
-            Factura factura = new Factura(baseImposable, LocalDate.now(), metodePagament, iva, total);
-            factura.setId_reserva(idReserva);
+            Factura factura = new Factura(idReserva,baseImposable, LocalDate.now(), metodePagament, iva, total);
             factura.save();
 
             mostrarMissatge(Alert.AlertType.INFORMATION, "Factura generada", "La factura s'ha generat correctament.");

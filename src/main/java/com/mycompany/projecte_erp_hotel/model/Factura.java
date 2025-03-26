@@ -14,14 +14,7 @@ public class Factura {
     private double iva;
     private double total;
     private int id_reserva;
-
-    public Factura(double base_imposable, LocalDate data_emisio, String metode_pagament, double iva, double total) {
-        this.base_imposable = base_imposable;
-        this.data_emisio = data_emisio;
-        this.metode_pagament = metode_pagament;
-        this.iva = iva;
-        this.total = total;
-    }
+    
         public Factura(int id_reserva, double base_imposable, LocalDate data_emisio, String metode_pagament, double iva, double total) {
         this.base_imposable = base_imposable;
         this.data_emisio = data_emisio;

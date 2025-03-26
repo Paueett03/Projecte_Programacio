@@ -24,7 +24,6 @@ public class Client extends Persona {
         this.targetaCredit = targetaCredit;
     }
 
-    public Client() {}
 
     // Getters y Setters
     public int getIdClient() {

@@ -24,12 +24,6 @@ public class Tasca {
         this.estat = estat;
     }
 
-    public Tasca(Date data_creacio, Date data_execucio, String descripcio) {
-        this.dataCreacio = data_creacio;
-        this.dataExecucio = data_execucio;
-        this.descripcio = descripcio;
-    }
-
     public Tasca() {
     }
 

@@ -24,7 +24,6 @@ public class Persona {
         this.telefon = telefon;
     }
 
-    public Persona() {}
 
     public int getIdPersona() {
         return idPersona;

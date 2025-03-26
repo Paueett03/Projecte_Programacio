@@ -18,7 +18,6 @@ public class Reserva {
     private tipus_IVA tipusIva;
     private String tipus_Pensio;
     private Habitacio habitacio;
-    private double preuTotal;
 
     public enum tipus_IVA {
         cero(0),
@@ -36,29 +35,16 @@ public class Reserva {
         }
     }
 
-    public Reserva(double preu_total_reserva, LocalDate data_reserva, LocalDate data_inici, LocalDate data_fi,
-            TipusReserva tipus_reserva, tipus_IVA tipusIva) {
-        this.preu_total_reserva = preu_total_reserva;
+    public Reserva(int id_persona, LocalDate data_reserva, LocalDate data_inici, LocalDate data_fi, TipusReserva tipus_reserva, tipus_IVA tipusIva, String tipus_Pensio, Habitacio habitacio, double Preu_Total) {
+        this.id_persona = id_persona;
         this.data_reserva = data_reserva;
         this.data_inici = data_inici;
         this.data_fi = data_fi;
         this.tipus_reserva = tipus_reserva;
         this.tipusIva = tipusIva;
-    }
-public Reserva(int id_reserva, LocalDate data_inici, LocalDate data_fi, String tipus_Pensio, Habitacio habitacio) {
-        this.id_reserva = id_reserva;
-        this.data_inici = data_inici;
-        this.data_fi = data_fi;
         this.tipus_Pensio = tipus_Pensio;
         this.habitacio = habitacio;
-        this.preuTotal = calcularPreuTotal();
-    }
-
-// Mètode per calcular el preu total
-    public double calcularPreuTotal() {
-        long diesReserva = ChronoUnit.DAYS.between(data_inici, data_fi);
-        double preuPerNit = tipus_Pensio.equalsIgnoreCase("mp") ? habitacio.getPreu_nit_MP() : habitacio.getPreu_nit_AD();
-        return preuPerNit * diesReserva;
+        this.preu_total_reserva = Preu_Total;
     }
     
     public enum TipusReserva {
@@ -71,16 +57,17 @@ public Reserva(int id_reserva, LocalDate data_inici, LocalDate data_fi, String t
         Connexio connexio = new Connexio();
         Connection conn = connexio.connecta();
 
-        String sql = "INSERT INTO Reserva (id_client, preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, Tipus_IVA) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Reserva (id_client, id_habitacio, preu_total_reserva, data_reserva, data_inici, data_fi, tipus_reserva, Tipus_IVA) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id_persona); // Usamos id_persona que és el id_client
-            stmt.setDouble(2, preu_total_reserva);
-            stmt.setDate(3, java.sql.Date.valueOf(data_reserva));
-            stmt.setDate(4, java.sql.Date.valueOf(data_inici));
-            stmt.setDate(5, java.sql.Date.valueOf(data_fi));
-            stmt.setString(6, tipus_reserva.name());
-            stmt.setInt(7, tipusIva.getValor());
+            stmt.setInt(2, habitacio.getId_habitacio());
+            stmt.setDouble(3, preu_total_reserva);
+            stmt.setDate(4, java.sql.Date.valueOf(data_reserva));
+            stmt.setDate(5, java.sql.Date.valueOf(data_inici));
+            stmt.setDate(6, java.sql.Date.valueOf(data_fi));
+            stmt.setString(7, tipus_reserva.name());
+            stmt.setInt(8, tipusIva.getValor());
 
             int filasAfectadas = stmt.executeUpdate();
             if (filasAfectadas > 0) {
