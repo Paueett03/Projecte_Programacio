@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Nou_empleat">
    <children>
-      <GridPane layoutX="47.0" layoutY="37.0">
+      <GridPane layoutX="10.0" layoutY="29.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -39,7 +38,7 @@
             <TextField fx:id="cognom" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="30.0" layoutY="86.0">
+      <GridPane layoutX="10.0" layoutY="74.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -52,7 +51,7 @@
             <TextField fx:id="adreça" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="256.0" layoutY="94.0">
+      <GridPane layoutX="257.0" layoutY="74.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -65,7 +64,7 @@
             <TextField fx:id="documentIdentitat" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="22.9619140625" layoutY="146.0">
+      <GridPane layoutX="9.9619140625" layoutY="118.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -78,7 +77,7 @@
             <TextField fx:id="telefon" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="346.0" layoutY="146.0">
+      <GridPane layoutX="327.0" layoutY="118.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -91,7 +90,7 @@
             <TextField fx:id="email" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="3.0" layoutY="188.0">
+      <GridPane layoutX="9.0" layoutY="164.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -104,7 +103,7 @@
             <TextField fx:id="salariBrut" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="276.0" layoutY="188.0">
+      <GridPane layoutX="266.0" layoutY="164.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -117,7 +116,7 @@
             <DatePicker fx:id="dataNaixement" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="15.0" layoutY="242.0">
+      <GridPane layoutX="13.0" layoutY="200.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -130,7 +129,7 @@
             <DatePicker fx:id="dataContratacio" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="350.0" layoutY="242.0">
+      <GridPane layoutX="347.0" layoutY="200.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -143,7 +142,7 @@
             <ComboBox fx:id="llocFeina" prefWidth="150.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <GridPane layoutX="39.0" layoutY="284.0">
+      <GridPane layoutX="11.0" layoutY="240.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />

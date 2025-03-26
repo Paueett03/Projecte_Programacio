@@ -21,6 +21,7 @@ public class Habitacio {
     private double preu_nit_AD;  // Preu per nit en Allotjament i Dinar
     private double preu_nit_MP;  // Preu per nit en Mitja Pensió
     private String descripcio;
+    private String estat;
 
     // Enumeración para el estado de la habitación
     public enum EstatHab {
@@ -38,10 +39,24 @@ public class Habitacio {
         this.preu_nit_MP = preu_nit_MP;
         this.descripcio = descripcio;
     }
+        public Habitacio(int id_habitacio, int numero_habitacio, TipusHab tipus_hab, int capacitat, double preu_nit_AD, double preu_nit_MP, String descripcio, String estat) {
+        this.id_habitacio = id_habitacio;
+        this.numero_habitacio = numero_habitacio;
+        this.tipus_hab = tipus_hab;
+        this.capacitat = capacitat;
+        this.preu_nit_AD = preu_nit_AD;
+        this.preu_nit_MP = preu_nit_MP;
+        this.descripcio = descripcio;
+        this.estat = estat;
+    }
 
     // Getters y setters
     public int getId_habitacio() {
         return id_habitacio;
+    }
+
+    public String getEstat() {
+        return estat;
     }
 
     public int getNumero_habitacio() {
@@ -98,6 +113,10 @@ public class Habitacio {
 
     public void setDescripcio(String descripcio) {
         this.descripcio = descripcio;
+    }
+
+    public void setEstat(String estat) {
+        this.estat = estat;
     }
 
     public void setEstat_hab(EstatHab estat_hab) {

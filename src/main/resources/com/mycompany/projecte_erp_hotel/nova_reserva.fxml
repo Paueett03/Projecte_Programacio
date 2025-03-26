@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Nova_reserva">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.projecte_erp_hotel.Nova_reserva">
    <children>
       <GridPane layoutX="367.0" layoutY="51.0">
          <columnConstraints>
@@ -25,18 +25,20 @@
             <Label text="DNI Client: " />
          </children>
       </GridPane>
-      <TextField fx:id="preuTotalField" layoutX="134.0" layoutY="51.0" />
+      <TextField fx:id="preuTotalField" editable="false" layoutX="134.0" layoutY="51.0" onAction="#calcularPreu" />
       <DatePicker fx:id="dataReservaPicker" disable="true" layoutX="134.0" layoutY="103.0" />
       <DatePicker fx:id="dataIniciPicker" layoutX="134.0" layoutY="152.0" />
       <DatePicker fx:id="dataFiPicker" layoutX="134.0" layoutY="200.0" />
       <ComboBox fx:id="tipusReservaCombo" layoutX="134.0" layoutY="248.0" prefWidth="150.0" />
       <ComboBox fx:id="tipusIVACombo" layoutX="134.0" layoutY="298.0" prefWidth="150.0" />
-      <Button fx:id="guardarReservaButton" layoutX="480.0" layoutY="344.0" mnemonicParsing="false" onAction="#guardarReserva" text="Crear" />
+      <Button layoutX="480.0" layoutY="344.0" mnemonicParsing="false" onAction="#guardarReserva" text="Crear" />
       <Label layoutX="35.0" layoutY="55.0" text="Preu Total: " />
       <Label layoutX="35.0" layoutY="107.0" text="Data Reserva: " />
       <Label layoutX="35.0" layoutY="156.0" text="Data Inici: " />
       <Label layoutX="35.0" layoutY="204.0" text="Data Fi: " />
       <Label layoutX="33.0" layoutY="252.0" text="Tipus Reserva: " />
       <Label layoutX="36.0" layoutY="302.0" text="Tipus IVA: " />
+      <Label layoutX="35.0" layoutY="348.0" text="Tipus Pensio: " />
+      <ComboBox fx:id="comboPensio" layoutX="134.0" layoutY="344.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
